@@ -1,0 +1,65 @@
+In Django, URL routing is the process of directing incoming browser requests (URLs) to the appropriate view function. It’s like a traffic cop directing which function should respond when someone visits a certain URL on your site.
+
+
+🛠️ Project Plan
+Project Name: mydjango_project
+App Name: pages
+Goal: Show a homepage with “Welcome to My Django Page!” using views & templates.
+
+python -m django startproject core
+So now that you’re in:
+
+C:\Users\K\Documents\coding\python\mydjango_project
+If you want to create a project named core, run:
+
+python -m django startproject core .
+🔸 The . means: create the project in the current directory — no extra folders.
+
+✅ Then continue like this:
+1. Create the app
+python manage.py startapp pages
+2. Add 'pages' to core/settings.py → INSTALLED_APPS
+Open with:
+
+notepad core/settings.py
+Find:
+
+INSTALLED_APPS = [
+    ...
+]
+Change to:
+
+INSTALLED_APPS = [
+    'pages',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    ...
+]
+3. In pages/views.py, write:
+from django.http import HttpResponse
+def home(request):
+    return HttpResponse("Welcome to the core homepage!")
+4. Create pages/urls.py
+notepad pages/urls.py
+Paste this:
+
+from django.urls import path
+from . import views
+urlpatterns = [
+    path('', views.home, name='home'),
+]
+5. Connect app URLs in core/urls.py
+Open:
+
+notepad core/urls.py
+Replace with:
+
+from django.contrib import admin
+from django.urls import path, include
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('pages.urls')),
+]
+6. Run the server
+python manage.py runserver
+Then open http://127.0.0.1:8000 to see your message!
