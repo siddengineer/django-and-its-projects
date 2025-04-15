@@ -1,0 +1,169 @@
+1. {% if %} – Conditional Statements
+The {% if %} tag is used to check a condition and render content if the condition evaluates to True. It works similarly to the if statement in Python.
+
+{% if condition %}
+  <!-- Content to display if the condition is true -->
+{% endif %}
+
+{% if user.is_authenticated %}
+  <p>Welcome, {{ user.username }}!</p>
+{% else %}
+  <p>Please log in.</p>
+{% endif %}
+
+
+
+{% if age >= 18 %}
+  <p>Adult</p>
+{% elif age >= 13 %}
+  <p>Teenager</p>
+{% else %}
+  <p>Child</p>
+{% endif %}
+
+{% for %} – Looping Over Data
+
+
+The {% for %} tag is used to loop through a list, dictionary, or any iterable.
+
+{% for item in list %}
+  <!-- Content to display for each item -->
+{% endfor %}
+
+<ul>
+  {% for book in books %}
+    <li>{{ book.title }}</li>
+  {% endfor %}
+</ul>
+
+ forloop.counter or forloop.revcounter to access the current iteration number:
+
+<ul>
+  {% for book in books %}
+    <li>{{ forloop.counter }}. {{ book.title }}</li>
+  {% endfor %}
+</ul>
+
+3. {% block %} – Template Blocks (for Extending Templates)
+The {% block %} tag is used to define a block of content in a parent template that can be overridden in child templates.
+
+
+{% block block_name %}
+  <!-- Default content goes here -->
+{% endblock %}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{% block title %}Default Title{% endblock %}</title>
+</head>
+<body>
+  <header>
+    <h1>My Site</h1>
+  </header>
+  <div>
+    {% block content %}
+      <!-- Default content for the body goes here -->
+    {% endblock %}
+  </div>
+</body>
+</html>
+
+
+{% extends "base.html" %}
+
+{% block title %}Home Page{% endblock %}
+
+{% block content %}
+  <h2>Welcome to the homepage!</h2>
+{% endblock %}
+
+
+4. {% include %} – Including Other Templates
+The {% include %} tag allows you to include another template inside the current template, which is useful for reusing common components like headers or footers.
+
+
+{% include "template_name.html" %}
+
+{% include "header.html" %}
+
+5. {% with %} – Variable Assignment
+The {% with %} tag allows you to assign a value to a variable and use it within a specific block.
+
+{% with var_name = value %}
+  <!-- Use var_name inside this block -->
+{% endwith %}
+
+{% with total_price = product.price|multiply:quantity %}
+  <p>Total price: ${{ total_price }}</p>
+{% endwith %}
+
+6. {% comment %} – Commenting Code
+The {% comment %} tag allows you to add comments within your templates. The content inside the {% comment %} block will not be rendered to the browser.
+
+Syntax:
+
+{% comment %}
+  This is a comment and will not be displayed.
+{% endcomment %}
+
+
+7. {% csrf_token %} – CSRF Token (Cross-Site Request Forgery)
+When working with forms, Django provides {% csrf_token %} to include a CSRF token in your form to prevent cross-site request forgery attacks.
+
+Syntax:
+
+<form method="post">
+  {% csrf_token %}
+  <!-- Form fields go here -->
+  <button type="submit">Submit</button>
+</form>
+
+8. {% static %} – Including Static Files
+The {% static %} tag is used to link to static files like images, CSS, or JavaScript.
+
+Syntax:
+
+{% load static %}
+<img src="{% static 'images/logo.png' %}" alt="Logo">
+
+9. {% url %} – Generating URLs
+The {% url %} tag generates a URL for a view by name, based on your Django URL configuration.
+
+Syntax:
+{% url 'view_name' %}
+<a href="{% url 'home' %}">Home</a>
+
+10. {% filter %} – Applying Filters to Variables
+Django templates support filters that you can apply to variables for formatting.
+
+Syntax:
+
+
+{{ variable|filter_name }}
+
+
+Example:
+{{ user.username|lower }}
+
+{% if %} / {% elif %} / {% else %} – Conditional statements
+
+{% for %} – Looping through items
+
+{% block %} – Defining blocks for inheritance
+
+{% include %} – Including other templates
+
+{% with %} – Assigning variables for use in a template
+
+{% csrf_token %} – Handling CSRF protection
+
+{% static %} – Linking static files
+
+{% url %} – Generating URLs for views
+
+{% comment %} – Adding comment
+
+
+
