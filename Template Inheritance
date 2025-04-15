@@ -1,0 +1,216 @@
+Template inheritance is a way to reuse a common structure across multiple web pages, ensuring that your design remains consistent without duplicating code.
+
+Key Benefits:
+DRY (Don’t Repeat Yourself): You only write the common structure once, and all pages can inherit it.
+
+Separation of Concerns: Template inheritance separates the layout and content of your pages.
+
+Maintainability: Changes to the overall layout can be made in one place, and they will be reflected across all pages that inherit the base template.
+
+
+
+Base Template Structure
+In Django, a base template typically contains the common structure that will be shared across multiple pages, such as headers, footers, and navigation menus.
+
+Example of base.html (Base Template):
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Website{% endblock %}</title>
+    <!-- Load static files (CSS, JS) -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/about/">About</a></li>
+                <li><a href="/contact/">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}
+        <!-- Default content if not overridden by child templates -->
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2025 My Website</p>
+    </footer>
+</body>
+</html>
+
+
+{% block title %}: This block can be overridden by child templates to set a custom title for each page.
+
+{% block content %}: This block is where the content of each page is inserted. It allows child templates to provide their unique content.
+
+
+3. Extending the Base Template in Child Templates
+Child templates extend the base template using the {% extends %} tag. This tag links the child template to the base template.
+
+Example of home.html (Child Template):
+
+
+{% extends "base.html" %}
+
+{% block title %}Home Page - My Website{% endblock %}
+
+{% block content %}
+    <h1>Welcome to the Home Page!</h1>
+    <p>Some content specific to the home page.</p>
+{% endblock %}
+
+
+
+
+{% extends "base.html" %}: This tells Django that home.html should inherit from base.html.
+
+{% block title %}: This block overrides the title block from base.html to give the home page a custom title.
+
+{% block content %}: This block fills in the content section with content specific to the home page.
+
+
+
+{% block %}: Defining Blocks
+The {% block %} tag is used in the base template to define sections that can be overridden in child templates.
+
+Example:
+
+
+{% block header %}
+    <h1>My Website</h1>
+{% endblock %}
+In the child template, you can override this block with different content.
+
+{% extends %}: Extending the Base Template
+The {% extends %} tag is used at the beginning of a child template to link it to a parent template.
+
+Example:
+
+
+{% extends "base.html" %}
+{% include %}: Including Other Templates
+You can include smaller snippets of HTML code (e.g., a sidebar or footer) within a base or child template using the {% include %} tag.
+
+Example:
+
+{% include "sidebar.html" %}
+{% load %}: Loading Custom Tags/Filters
+In some cases, you might need to load custom template tags or filters. For example, if you want to include static files or use custom filters, you use {% load %}.
+
+Example:
+
+
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+5. Overriding Blocks in Child Templates
+A child template can override one or more blocks defined in the base template to customize the content.
+
+
+
+Example of Overriding Multiple Blocks:
+
+
+
+{% extends "base.html" %}
+
+{% block title %}About Us{% endblock %}
+
+{% block content %}
+    <h2>About Our Company</h2>
+    <p>We are a leading provider of innovative solutions.</p>
+{% endblock %}
+In this example:
+
+The title block is overridden to change the title of the page.
+
+The content block is overridden with custom content specific to the "About Us" page.
+
+
+
+6. Using Template Inheritance with Django Views
+In Django, templates are rendered using views. In views, you simply specify the template to render, and Django will apply the inheritance system.
+
+Example View (in views.py):
+
+from django.shortcuts import render
+
+def home(request):
+    return render(request, 'home.html')
+
+def about(request):
+    return render(request, 'about.html')
+Here, both the home.html and about.html templates will inherit from the base template (base.html) and will only override the necessary blocks.
+
+
+
+
+7. Template Inheritance Best Practices
+Use Meaningful Block Names: Use descriptive block names like {% block content %} or {% block header %} so the template structure is clear.
+
+Avoid Overriding Too Many Blocks: While overriding is powerful, try to keep your base template as general as possible, and only override the necessary blocks in child templates.
+
+Use {% include %} for Reusable Components: If there’s a component you’ll use across multiple pages (like a sidebar or a footer), consider including it via {% include %} in the base template.
+
+Keep the Base Template Clean: Don’t overcomplicate the base template. It should define the structure, leaving the specific content to the child templates.
+
+
+
+
+8. Example of Full Template Inheritance
+base.html (Base Template):
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}My Website{% endblock %}</title>
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Website</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+        </ul>
+    </nav>
+    
+    <div id="content">
+        {% block content %}{% endblock %}
+    </div>
+
+    <footer>
+        <p>&copy; 2025 My Website</p>
+    </footer>
+</body>
+</html>
+
+
+
+home.html (Child Template):
+
+{% extends "base.html" %}
+
+{% block title %}Home - My Website{% endblock %}
+
+{% block content %}
+    <h2>Welcome to the Home Page!</h2>
+    <p>This is the homepage of the website.</p>
+{% endblock %}
+
+
+
+
+
+
