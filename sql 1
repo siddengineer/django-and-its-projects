@@ -1,0 +1,225 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "73b9a41c",
+   "metadata": {
+    "_cell_guid": "b1076dfc-b9ad-4769-8c92-a6c4dae69d19",
+    "_uuid": "8f2839f25d086af736a60e9eeb907d3b93b6e0e5",
+    "execution": {
+     "iopub.execute_input": "2025-06-01T12:47:50.456376Z",
+     "iopub.status.busy": "2025-06-01T12:47:50.455973Z",
+     "iopub.status.idle": "2025-06-01T12:47:52.591826Z",
+     "shell.execute_reply": "2025-06-01T12:47:52.590642Z"
+    },
+    "papermill": {
+     "duration": 2.141545,
+     "end_time": "2025-06-01T12:47:52.593472",
+     "exception": false,
+     "start_time": "2025-06-01T12:47:50.451927",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "/kaggle/input/imdb-movie-reviews-2021/IMDB_Movies_2021.db\n"
+     ]
+    }
+   ],
+   "source": [
+    "# This Python 3 environment comes with many helpful analytics libraries installed\n",
+    "# It is defined by the kaggle/python Docker image: https://github.com/kaggle/docker-python\n",
+    "# For example, here's several helpful packages to load\n",
+    "\n",
+    "import numpy as np # linear algebra\n",
+    "import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)\n",
+    "\n",
+    "# Input data files are available in the read-only \"../input/\" directory\n",
+    "# For example, running this (by clicking run or pressing Shift+Enter) will list all files under the input directory\n",
+    "\n",
+    "import os\n",
+    "for dirname, _, filenames in os.walk('/kaggle/input'):\n",
+    "    for filename in filenames:\n",
+    "        print(os.path.join(dirname, filename))\n",
+    "\n",
+    "# You can write up to 20GB to the current directory (/kaggle/working/) that gets preserved as output when you create a version using \"Save & Run All\" \n",
+    "# You can also write temporary files to /kaggle/temp/, but they won't be saved outside of the current session"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "6284abb8",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-05-31T18:09:04.420916Z",
+     "iopub.status.busy": "2025-05-31T18:09:04.420516Z",
+     "iopub.status.idle": "2025-05-31T18:09:04.446932Z",
+     "shell.execute_reply": "2025-05-31T18:09:04.445645Z",
+     "shell.execute_reply.started": "2025-05-31T18:09:04.420887Z"
+    },
+    "papermill": {
+     "duration": 0.001744,
+     "end_time": "2025-06-01T12:47:52.597478",
+     "exception": false,
+     "start_time": "2025-06-01T12:47:52.595734",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "import sqlite3\n",
+    "import pandas as pd\n",
+    "conn = sqlite3.connect(\"/kaggle/input/imdb-movie-reviews-2021/IMDB_Movies_2021.db\")\n",
+    "tables = pd.read_sql(\"SELECT name From sqlite_master WHERE type = 'table';\",conn)\n",
+    "print(\"Tables in DB: \")\n",
+    "print(tables)\n",
+    "df = pd.read_sql(\"SELECT * FROM Reviews LIMIT 5;\",conn)\n",
+    "print(df.head())\n",
+    "conn.close()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "id": "06f8307b",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-06-01T12:47:52.602420Z",
+     "iopub.status.busy": "2025-06-01T12:47:52.601980Z",
+     "iopub.status.idle": "2025-06-01T12:47:52.635858Z",
+     "shell.execute_reply": "2025-06-01T12:47:52.634117Z"
+    },
+    "papermill": {
+     "duration": 0.038577,
+     "end_time": "2025-06-01T12:47:52.637825",
+     "exception": false,
+     "start_time": "2025-06-01T12:47:52.599248",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Tables in the database\n",
+      "              name\n",
+      "0          REVIEWS\n",
+      "1  sqlite_sequence\n"
+     ]
+    }
+   ],
+   "source": [
+    "import sqlite3\n",
+    "import pandas as pd\n",
+    "conn = sqlite3.connect(\"/kaggle/input/imdb-movie-reviews-2021/IMDB_Movies_2021.db\")\n",
+    "tables = pd.read_sql(\"SELECT name FROM sqlite_master WHERE type='table';\",conn)\n",
+    "print(\"Tables in the database\")\n",
+    "print(tables)\n",
+    "conn.close()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "b1ff66db",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2025-06-01T12:47:52.643326Z",
+     "iopub.status.busy": "2025-06-01T12:47:52.642964Z",
+     "iopub.status.idle": "2025-06-01T12:47:52.663939Z",
+     "shell.execute_reply": "2025-06-01T12:47:52.662676Z"
+    },
+    "papermill": {
+     "duration": 0.025936,
+     "end_time": "2025-06-01T12:47:52.665878",
+     "exception": false,
+     "start_time": "2025-06-01T12:47:52.639942",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "   ID                                             REVIEW  RATING  \\\n",
+      "0   1  I don't get all the terrible reviews for this ...       5   \n",
+      "1   2  I cannot believe anyone could give this film l...       8   \n",
+      "2   3  Great White is not the worst way to spend 90 m...       4   \n",
+      "3   4  Great White is as basic of a killer shark film...       4   \n",
+      "4   5  Terrible story, dialogue and CGI. The film has...       4   \n",
+      "\n",
+      "                 AUTHOR                                              TITLE  \n",
+      "0       margarida-44311                                          Not Bad\\n  \n",
+      "1              joemay-2   What are all the bad reviews about is it a wo...  \n",
+      "2                  nebk                            Great White=Jaws Lite\\n  \n",
+      "3             kuarinofu                     Bare-bones killer shark film\\n  \n",
+      "4  Horror_Flick_Fanatic                Terrible story, dialogue, and CGI\\n  \n"
+     ]
+    }
+   ],
+   "source": [
+    "conn = sqlite3.connect(\"/kaggle/input/imdb-movie-reviews-2021/IMDB_Movies_2021.db\")\n",
+    "df = pd.read_sql(\"SELECT * FROM REVIEWS Limit 5;\",conn)\n",
+    "print(df.head())\n",
+    "conn.close()"
+   ]
+  }
+ ],
+ "metadata": {
+  "kaggle": {
+   "accelerator": "none",
+   "dataSources": [
+    {
+     "datasetId": 1379604,
+     "sourceId": 2289231,
+     "sourceType": "datasetVersion"
+    }
+   ],
+   "dockerImageVersionId": 31040,
+   "isGpuEnabled": false,
+   "isInternetEnabled": false,
+   "language": "python",
+   "sourceType": "notebook"
+  },
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.11.11"
+  },
+  "papermill": {
+   "default_parameters": {},
+   "duration": 7.792255,
+   "end_time": "2025-06-01T12:47:53.190520",
+   "environment_variables": {},
+   "exception": null,
+   "input_path": "__notebook__.ipynb",
+   "output_path": "__notebook__.ipynb",
+   "parameters": {},
+   "start_time": "2025-06-01T12:47:45.398265",
+   "version": "2.6.0"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
